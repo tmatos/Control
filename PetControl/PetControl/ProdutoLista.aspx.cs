@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using PetControl.Models;
+using System.Web.ModelBinding;
+
+namespace PetControl
+{
+    public partial class ProdutoLista : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public IQueryable<Produto> GetProdutos([QueryString("id")] int? categoriaId)
+        {
+            var _db = new PetControl.Models.PetContext();
+
+            IQueryable<Produto> query = _db.Produtos;
+            if (categoriaId.HasValue && categoriaId > 0)
+            {
+                query = query.Where(p => p.CategoriaID == categoriaId);
+            }
+
+            return query;
+        }
+    }
+}
